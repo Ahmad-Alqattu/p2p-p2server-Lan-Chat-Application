@@ -1,7 +1,5 @@
 package application;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;

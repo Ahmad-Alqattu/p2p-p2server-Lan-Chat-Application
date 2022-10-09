@@ -29,7 +29,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="27.0" layoutY="210.0" prefHeight="18.0" prefWidth="81.0" text="Send To">
+            <Label layoutX="27.0" layoutY="195.0" prefHeight="18.0" prefWidth="81.0" text="Send To">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

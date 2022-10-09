@@ -19,8 +19,8 @@ public class ClientServer extends TimerTask {
 	}
 
 	public void run() {
-		try {
-
+		try {	
+			//server ip
 			InetSocketAddress address = new InetSocketAddress("192.168.0.107", 1234);
 
 			buffer = (MainController.name).getBytes();
