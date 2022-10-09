@@ -13,18 +13,22 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.WindowEvent;
 
 public class MainController implements Initializable {
 	static String name;
@@ -61,13 +65,19 @@ public class MainController implements Initializable {
 	void clear(ActionEvent event) {
 		ChatClient.px=3;
 		ChatPane.getChildren().clear();
-		ChatPane.setMinHeight(758);
+		ChatPane.setMinHeight(467);
 	}
 
 	@FXML
 	void send(ActionEvent event) throws IOException {
 //System.out.println("ad "+name);
-
+		if(clientList.getValue()==null) {
+			Alert a = new Alert(null);
+			a.setAlertType(AlertType.WARNING);
+			a.setContentText("Select receiver first");
+			a.show();		
+		}else
+		if(!TextArea.getText().isBlank()) {
 		InetSocketAddress address = new InetSocketAddress(destip, destPort);
 		String msg = name + " >  " + TextArea.getText();
 		Label l = new Label("you >  " + TextArea.getText());
@@ -78,7 +88,6 @@ public class MainController implements Initializable {
 		ChatPane.getChildren().add(l);
 
 
-
 		l.setLayoutX(ChatPane.getWidth()*.85 - (msg.length() * 6));
 		if (ChatPane.getHeight()<(ChatClient.px+20))
 			ChatPane.setPrefHeight(ChatClient.px+50);
@@ -86,23 +95,35 @@ public class MainController implements Initializable {
 		ch.SendTo(address, msg);
 		System.out.println(msg);
 		TextArea.clear();
+		}
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		clientList.setLayoutX(13);
+		clientList.setLayoutX(8);
 		clientList.setLayoutY(228);
 		clientList.setPromptText(" select one");
-		clientList.setPrefWidth(150);
+		clientList.setPrefWidth(120);
 		clientList.setPrefHeight(35);
-		clientList.setVisibleRowCount(12);
+		clientList.setVisibleRowCount(9);
 		right.getChildren().add(clientList);
 		clientList.setOnAction(e ->{
 
 			destip =userList.get(clientList.getValue()).getAddress().getHostAddress() ;
 			destPort=userList.get(clientList.getValue().toString()).getPort() ;
-
+			LoginWindow.getStg().setOnCloseRequest((EventHandler<WindowEvent>) new EventHandler<WindowEvent>() {
+			    @Override
+			    public void handle(WindowEvent event) {
+			        try {
+			            Platform.exit();
+			            System.exit(0);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			    }
+			});
 		});
 	}
 
@@ -159,7 +180,7 @@ public class MainController implements Initializable {
 
 	public static void  update() {
 		clientList.getItems().clear();
-		clientList.getSelectionModel().clearSelection();
+		//clientList.getSelectionModel().clearSelection();
 		   for (String name : userList.keySet()) {     
 			   clientList.getItems().add(name);
 		   }

@@ -21,7 +21,7 @@ public class ClientServer extends TimerTask {
 	public void run() {
 		try {
 
-			InetSocketAddress address = new InetSocketAddress("192.168.0.16", 1234);
+			InetSocketAddress address = new InetSocketAddress("192.168.0.107", 1234);
 
 			buffer = (MainController.name).getBytes();
 			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address);
